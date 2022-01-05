@@ -1,17 +1,23 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect, Component } from 'react';
 import './App.css';
+import { Button } from 'react-bootstrap'
 
 
 import { Map, GoogleApiWrapper, Marker  } from 'google-maps-react';
 
 const mapStyles = {
+  position: 'relative',  
   width: '100%',
-  height: '100%'
+  height: '100%',
+ 
+  
 };
 
 
 
 const App=({google})=>{
+
+
 
     const [markers,setMarkers]=useState([]);
 
@@ -38,11 +44,14 @@ const App=({google})=>{
             title: "The marker`s title will appear as a tooltip.",
             name: "SOMA",
             position: { lat: 45.7494, lng: 21.2272 }
-          }]
+          }
+        ]
         )
 
     },[])
  
+ 
+
 
 
   const handleMapClick=(t,map,coord)=>{
@@ -62,16 +71,21 @@ const App=({google})=>{
 
     // Get current location
 
-    // navigator.geolocation.getCurrentPosition(function(position) {
-    //   console.log("Latitude is :", position.coords.latitude);
-    //   console.log("Longitude is :", position.coords.longitude);
-    // });
+    navigator.geolocation.getCurrentPosition(function(position) {
+      console.log("My location: ")
+      console.log("Latitude is :", position.coords.latitude);
+      console.log("Longitude is :", position.coords.longitude);
+    });
 
     
     }
     
 
     return <div>
+   {/* <Button  variant="primary">Delete</Button> */}
+
+
+
         <Map
           google={google}
           zoom={14}
@@ -92,6 +106,7 @@ const App=({google})=>{
             
           ))}
         </Map>
+
       </div>
 }
 
