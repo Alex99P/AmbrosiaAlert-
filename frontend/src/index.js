@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+// import App from './App';
+import Maps from './components/Map'
 import reportWebVitals from './reportWebVitals';
 import NavBar from './components/navBar';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -20,7 +21,7 @@ ReactDOM.render(
   </Container> */}
 
   <NavBar/>
-  <App/>
+  <Maps/>
   
 
   

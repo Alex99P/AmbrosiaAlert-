@@ -8,6 +8,7 @@ export const getDatas=(req,res)=>{
 
 export const createData = (req, res) => {
     const data = req.body;
+    console.log(data);
     datas.push({ ...data, id: uuid() });
     res.send("Data Added Successfully");
   };
