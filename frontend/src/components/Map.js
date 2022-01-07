@@ -3,33 +3,26 @@ import '../App.css';
 import { Button } from 'react-bootstrap'
 import axios from 'axios';
 import { Map, GoogleApiWrapper, Marker  } from 'google-maps-react';
+import NavBar from './navBar';
 
 const mapStyles = {
   position: 'relative',  
-  width: '100%',
+  // width: '100%',
   height: '100%',
- 
-  
+  marginLeft:" 230px",
+  // overflow: "hidden"
 };
-
-
-// {
-//   "position": { "lat": 45.75565841319558, "lng": 21.2265133544922 }
-// }
-// {
-//     "position": { "lat": 45.7405352092011, "lng": 21.266596286010756 }
-// }
-//  {
-//     "position": { "lat": 45.7492203222726, "lng": 21.214239566040053 }
-// }
-
 
 
 const Maps=({google})=>{
 
+  
+  // <NavBar handleAddButon="handleAddButon" />
   const [currentLoc,setCurrentLoc]=useState();
   const [markers,setMarkers]=useState([]);
+  const [btnClick,setBtnClick]=useState(false);
    
+
 
 
     useEffect(() => {
@@ -73,33 +66,33 @@ const Maps=({google})=>{
       if (response.status === 200) {
        
         setMarkers([...markers,{
-      
           position
-         
-  
       }])
-      // console.log(markers);
-
+      setBtnClick(false);
       }
     };
  
 
-
-  const handleMapClick=(t,map,coord)=>{
+    const handleMapClick=(t,map,coord)=>{
       const { latLng } = coord;
-
-   
+// console.log(btnClick);
+    if(btnClick===true)
       addUser(latLng);
 
     }
-    
+  
+     const handleAddButon=()=>{
+      // console.log("aici")
+      setBtnClick(true);
+      }
     
     return <div>
-   {/* <Button  variant="primary">Delete</Button> */}
-
+    <div className="sidenav">
+    <Button onClick={handleAddButon} variant="danger">Add alert</Button>
+    </div>
         {currentLoc&&<Map
           google={google}
-          zoom={14}
+          zoom={15}
           style={mapStyles}
           initialCenter={currentLoc}
           onClick={handleMapClick}
@@ -107,7 +100,7 @@ const Maps=({google})=>{
           { markers.map((marker, index) => (
            
             <Marker
-              key={marker.id}
+              key={index}
               title={marker.title}
               name={marker.name}
               position={marker.position}

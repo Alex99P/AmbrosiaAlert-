@@ -4,7 +4,7 @@ import './index.css';
 // import App from './App';
 import Maps from './components/Map'
 import reportWebVitals from './reportWebVitals';
-import NavBar from './components/navBar';
+// import NavBar from './components/Map';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Row, Col,Container } from 'react-bootstrap';
 
@@ -13,14 +13,8 @@ import { Row, Col,Container } from 'react-bootstrap';
 
 ReactDOM.render(
   <React.StrictMode>
-   {/* <Container>
-  <Row>
-    <Col ><NavBar/></Col>
-    <Col sm={12}><App /></Col>
-  </Row>
-  </Container> */}
-
-  <NavBar/>
+  
+  {/* <NavBar/> */}
   <Maps/>
   
 
