@@ -2,8 +2,6 @@ import React, { useState,useEffect, Component } from 'react';
 import '../App.css';
 import { Button } from 'react-bootstrap'
 import axios from 'axios';
-
-
 import { Map, GoogleApiWrapper, Marker  } from 'google-maps-react';
 
 const mapStyles = {
@@ -15,56 +13,83 @@ const mapStyles = {
 };
 
 
+// {
+//   "position": { "lat": 45.75565841319558, "lng": 21.2265133544922 }
+// }
+// {
+//     "position": { "lat": 45.7405352092011, "lng": 21.266596286010756 }
+// }
+//  {
+//     "position": { "lat": 45.7492203222726, "lng": 21.214239566040053 }
+// }
+
+
 
 const Maps=({google})=>{
 
+  const [currentLoc,setCurrentLoc]=useState();
+  const [markers,setMarkers]=useState([]);
+   
 
 
-    const [markers,setMarkers]=useState([]);
-
-    // acestea va trebui sa le iau din baza de date
     useEffect(() => {
       getData();
 
+      navigator.geolocation.getCurrentPosition(function(position) {
+
+
+    setCurrentLoc({
+      lat:position.coords.latitude ,
+      lng: position.coords.longitude
+    })
+
+ 
+    });
+
     },[]);
+
+    
+    
 
     const getData= async ()=> {
 
       const response= await axios.get("http://localhost:5000/datas");
       if(response.status===200){
-        setMarkers(response.data); //aici
+        setMarkers(response.data); 
+        console.log(response.data);
     
       }
     
     }
+
+    const addUser = async (data) => {
+
+      const lat = data.lat();
+      const lng = data.lng();
+      
+      const position={ lat,lng };
+
+      const response = await axios.post("http://localhost:5000/data", {position});
+      if (response.status === 200) {
+       
+        setMarkers([...markers,{
+      
+          position
+         
+  
+      }])
+      // console.log(markers);
+
+      }
+    };
  
 
 
   const handleMapClick=(t,map,coord)=>{
       const { latLng } = coord;
+
    
-
-    const lat = latLng.lat();
-    const lng = latLng.lng();
-
-
-    setMarkers([...markers,{
-      
-        // title: "",
-        // name: "",
-        position: { lat, lng },
-        // id:''
-
-    }])
-
-    // Get current location
-
-    // navigator.geolocation.getCurrentPosition(function(position) {
-    //   console.log("My location: ")
-    //   console.log("Latitude is :", position.coords.latitude);
-    //   console.log("Longitude is :", position.coords.longitude);
-    // });
-
+      addUser(latLng);
 
     }
     
@@ -72,28 +97,23 @@ const Maps=({google})=>{
     return <div>
    {/* <Button  variant="primary">Delete</Button> */}
 
-
-
-        <Map
+        {currentLoc&&<Map
           google={google}
           zoom={14}
           style={mapStyles}
-          initialCenter={{
-            lat: "45.7494",
-            lng: "21.2272"
-          }}
+          initialCenter={currentLoc}
           onClick={handleMapClick}
         >
           { markers.map((marker, index) => (
+           
             <Marker
               key={marker.id}
               title={marker.title}
               name={marker.name}
               position={marker.position}
             />
-            
           ))}
-        </Map>
+        </Map>}
 
       </div>
 }
