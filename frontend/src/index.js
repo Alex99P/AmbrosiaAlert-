@@ -14,7 +14,6 @@ import { Row, Col,Container } from 'react-bootstrap';
 ReactDOM.render(
   <React.StrictMode>
   
-  {/* <NavBar/> */}
   <Maps/>
   
 

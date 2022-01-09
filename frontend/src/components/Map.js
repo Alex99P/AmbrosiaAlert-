@@ -9,7 +9,7 @@ const mapStyles = {
   position: 'relative',  
   // width: '100%',
   height: '100%',
-  marginLeft:" 230px",
+  marginLeft:" 290px",
   // overflow: "hidden"
 };
 
@@ -22,7 +22,9 @@ const Maps=({google})=>{
   const [currentLoc,setCurrentLoc]=useState();
   const [markers,setMarkers]=useState([]);
   const [btnClick,setBtnClick]=useState(false);
-
+  const current = new Date();
+  const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+  // console.log(date);
 
     useEffect(() => {
       getData();
@@ -35,7 +37,7 @@ const Maps=({google})=>{
       lng: position.coords.longitude
     })
 
- console.log(position.coords.longitude)
+//  console.log(position.coords.longitude)
     });
 
     },[]);
@@ -48,20 +50,21 @@ const Maps=({google})=>{
       const response= await axios.get("http://localhost:5000/datas");
       if(response.status===200){
         setMarkers(response.data); 
-        console.log(response.data);
+        console.log("Aici",response.data);
     
       }
     
     }
 
-    const addUser = async (data) => {
+    const addData = async (data) => {
 
       const lat = data.lat();
       const lng = data.lng();
       
       const position={ lat,lng };
+      
 
-      const response = await axios.post("http://localhost:5000/data", {position});
+      const response = await axios.post("http://localhost:5000/data", {position,date});
       if (response.status === 200) {
        
         setMarkers([...markers,{
@@ -77,7 +80,7 @@ const Maps=({google})=>{
       const { latLng } = coord;
 // console.log(btnClick);
     if(btnClick===true)
-      addUser(latLng);
+      addData(latLng);
 
     }
   
@@ -93,7 +96,8 @@ const Maps=({google})=>{
     return <div>
     <div className="sidenav">
     <Button onClick={handleAddButon} variant="danger">Add alert</Button>
-    <h1>Merge</h1>
+    {/* <h1>Merge</h1> */}
+    <div className='display'></div>
     </div>
         {currentLoc&&<Map
           google={google}
