@@ -2,8 +2,8 @@ import React, { useState,useEffect, Component } from 'react';
 import '../App.css';
 import { Button } from 'react-bootstrap'
 import axios from 'axios';
-import { Map, GoogleApiWrapper, Marker  } from 'google-maps-react';
-import NavBar from './navBar';
+import { Map, GoogleApiWrapper, Marker} from 'google-maps-react';
+
 
 const mapStyles = {
   position: 'relative',  
@@ -15,14 +15,13 @@ const mapStyles = {
 
 
 const Maps=({google})=>{
+ 
 
   
-  // <NavBar handleAddButon="handleAddButon" />
+
   const [currentLoc,setCurrentLoc]=useState();
   const [markers,setMarkers]=useState([]);
   const [btnClick,setBtnClick]=useState(false);
-   
-
 
 
     useEffect(() => {
@@ -36,7 +35,7 @@ const Maps=({google})=>{
       lng: position.coords.longitude
     })
 
- 
+ console.log(position.coords.longitude)
     });
 
     },[]);
@@ -74,6 +73,7 @@ const Maps=({google})=>{
  
 
     const handleMapClick=(t,map,coord)=>{
+  
       const { latLng } = coord;
 // console.log(btnClick);
     if(btnClick===true)
@@ -86,9 +86,14 @@ const Maps=({google})=>{
       setBtnClick(true);
       }
     
+
+    
+
+
     return <div>
     <div className="sidenav">
     <Button onClick={handleAddButon} variant="danger">Add alert</Button>
+    <h1>Merge</h1>
     </div>
         {currentLoc&&<Map
           google={google}
@@ -96,6 +101,7 @@ const Maps=({google})=>{
           style={mapStyles}
           initialCenter={currentLoc}
           onClick={handleMapClick}
+    
         >
           { markers.map((marker, index) => (
            
@@ -104,8 +110,15 @@ const Maps=({google})=>{
               title={marker.title}
               name={marker.name}
               position={marker.position}
-            />
+            
+            >
+
+            </Marker>
+            
           ))}
+         
+		 
+	 	
         </Map>}
 
       </div>
